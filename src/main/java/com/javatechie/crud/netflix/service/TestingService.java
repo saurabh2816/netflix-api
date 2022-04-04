@@ -38,8 +38,8 @@ public class TestingService {
         for (Element link : links) {
 
             final String LINK = link.attr("abs:href");
-            String result = java.net.URLDecoder.decode(LINK, StandardCharsets.UTF_8);
-
+//            String result = java.net.URLDecoder.decode(LINK, StandardCharsets.UTF_8);
+            String result = LINK;
             print("\n\n  * a:  (%s)", LINK);
 
             final Matcher matcher = pattern.matcher(link.attr("abs:href"));

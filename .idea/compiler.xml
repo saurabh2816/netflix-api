@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.6">
-      <module name="netflix" target="10" />
+      <module name="netflix" target="1.8" />
       <module name="spring-boot-crud-example-2" target="10" />
     </bytecodeTargetLevel>
   </component>
