@@ -91,7 +91,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.javatechie.crud.netflix</mainClass>
+							<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
