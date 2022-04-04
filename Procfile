@@ -1,2 +1,2 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.javatechie.crud.netflix
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.javatechie.crud.netflix.NetflixApplication
 
