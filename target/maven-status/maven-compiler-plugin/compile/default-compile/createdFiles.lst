@@ -1,0 +1,8 @@
+com/javatechie/crud/netflix/NetflixApplication.class
+com/javatechie/crud/netflix/entity/Product.class
+com/javatechie/crud/netflix/service/TestingService.class
+com/javatechie/crud/netflix/entity/Product$ProductBuilder.class
+com/javatechie/crud/netflix/service/ProductService.class
+com/javatechie/crud/netflix/repository/ProductRepository.class
+com/javatechie/crud/netflix/controller/MainController.class
+com/javatechie/crud/netflix/controller/ProductController.class
