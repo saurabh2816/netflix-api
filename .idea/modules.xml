@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/spring-boot-crud-example-2.iml" filepath="$PROJECT_DIR$/spring-boot-crud-example-2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netflix.iml" filepath="$PROJECT_DIR$/.idea/modules/netflix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netflix.main.iml" filepath="$PROJECT_DIR$/.idea/modules/netflix.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/netflix.test.iml" filepath="$PROJECT_DIR$/.idea/modules/netflix.test.iml" />
     </modules>
   </component>
 </project>
