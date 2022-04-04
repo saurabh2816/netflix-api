@@ -22,7 +22,7 @@ public class MainController {
     public ResponseEntity<String> testendpoint() {
 
 
-        var res = testingService.something();
+        String res = testingService.something();
 
         return ResponseEntity.ok(res);
     }
