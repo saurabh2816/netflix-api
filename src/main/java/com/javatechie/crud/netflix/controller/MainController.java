@@ -27,4 +27,12 @@ public class MainController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/fun")
+    public ResponseEntity<String> testendpoint() {
+
+
+        String res = "saurabh and ronak";
+
+        return ResponseEntity.ok(res);
+    }
 }
