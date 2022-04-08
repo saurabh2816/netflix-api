@@ -28,7 +28,7 @@ public class MainController {
     }
 
     @GetMapping("/fun")
-    public ResponseEntity<String> testendpoint() {
+    public ResponseEntity<String> newendpoint() {
 
 
         String res = "saurabh and ronak";
