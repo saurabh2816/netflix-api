@@ -54,6 +54,15 @@ public class TestingService {
 
         }
 
+        for(Element link : links) {
+            System.out.println(" After slash : " + link.attr("href"));
+            System.out.println("text: " + link.text());
+            System.out.println("Full Link: " + link.baseUri() + link.attr("href"));
+
+            System.out.println("\n\n");
+        }
+
+
         return res;
     }
 
