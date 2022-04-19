@@ -1,11 +1,13 @@
 package com.javatechie.crud.netflix.controller;
 import com.javatechie.crud.netflix.model.Movie;
+import com.javatechie.crud.netflix.model.OmdbSearchResult;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
 import com.javatechie.crud.netflix.service.OmdbAPIService;
 
 import com.javatechie.crud.netflix.model.Node;
 import com.javatechie.crud.netflix.service.JSoupService;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -32,10 +36,24 @@ public class MainController {
     }
 
     @GetMapping("/getOne")
-    public ResponseEntity<List<Node>> getListOfNodesFromOneLink() {
+    public ResponseEntity<List<Movie>> getListOfNodesFromOneLink() {
 
         List<Node> res = JSoupService.getListOfNodesFromLink();
-        return ResponseEntity.ok(res);
+
+        List<Movie> movieList = new ArrayList<>();
+        for (Node node : res) {
+            if(node.getRawMovieName().contains(".mp4")) { // TODO: Add support for more media types
+                Movie movie = omdbAPIService.getMovieByTitle(node.getMovieName());
+                movieList.add(movie);
+            }
+        }
+
+//        res.stream().filter(node -> !node.getRawMovieName().contains(".srt")).map(node -> {
+//            Movie movie = omdbAPIService.getMovieByTitle(node.getMovieName());
+//            return movieList.add(movie);
+//        });
+
+        return ResponseEntity.ok(movieList);
 
     }
 
@@ -48,9 +66,17 @@ public class MainController {
     }
 
     @GetMapping("/movies/byname/{query}")
-    public OmdbSearchResults getMovieDetails(@PathVariable String query) {
+    public OmdbSearchResults getMoviesByQuery(@PathVariable String query) {
 
-        return omdbAPIService.getMovieDetails(query);
+        return omdbAPIService.getMoviesByQuery(query);
+
+    }
+
+
+    @GetMapping("/movies/bytitle/{title}")
+    public Movie getMovieByTitle(@PathVariable String title) {
+
+        return omdbAPIService.getMovieByTitle(title);
 
     }
 

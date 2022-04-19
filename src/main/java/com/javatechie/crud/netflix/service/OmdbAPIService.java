@@ -19,7 +19,7 @@ public class OmdbAPIService {
     String url = "http://www.omdbapi.com/";
     WebClient webClient = WebClient.create(url);
 
-    public OmdbSearchResults getMovieDetails(String query) {
+    public OmdbSearchResults getMoviesByQuery(String query) {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -35,12 +35,12 @@ public class OmdbAPIService {
 
     }
 
-    public Movie getMoviesByQuery(String query) {
+    public Movie getMovieByTitle(String title) {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("apikey", API_KEY)
-                        .queryParam("t", query)
+                        .queryParam("t", title)
                         .build())
                 .retrieve()
                 .bodyToMono(Movie.class)
