@@ -1,13 +1,11 @@
 package com.javatechie.crud.netflix.controller;
 import com.javatechie.crud.netflix.model.Movie;
-import com.javatechie.crud.netflix.model.OmdbSearchResult;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
 import com.javatechie.crud.netflix.service.OmdbAPIService;
 
 import com.javatechie.crud.netflix.model.Node;
 import com.javatechie.crud.netflix.service.JSoupService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -65,7 +62,8 @@ public class MainController {
 
     }
 
-    @GetMapping("/movies/byname/{query}")
+    // TODO: use this API to somehow provide realtime search
+    @GetMapping("/movies/search/{query}")
     public OmdbSearchResults getMoviesByQuery(@PathVariable String query) {
 
         return omdbAPIService.getMoviesByQuery(query);
