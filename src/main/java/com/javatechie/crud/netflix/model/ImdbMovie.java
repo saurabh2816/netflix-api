@@ -1,11 +1,10 @@
 package com.javatechie.crud.netflix.model;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class Movie {
+public class ImdbMovie {
 
     @JsonProperty("Title")
     private String title;
@@ -56,7 +55,7 @@ public class Movie {
     @JsonProperty("Response")
     private String response;
 
-    public Movie() {
+    public ImdbMovie() {
     }
 
     public String getTitle() {
@@ -259,18 +258,3 @@ public class Movie {
         this.response = response;
     }
 }
-=======
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Movie {
-    private ImdbMovie info;
-    private String url;
-}
->>>>>>> 58711e7... this might actually work

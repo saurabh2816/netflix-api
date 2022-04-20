@@ -25,46 +25,53 @@ public class JSoupService {
 
     public List<Node> getListOfNodesFromLink() {
 
-        String url = "http://167.114.174.132:9092/movies/Batch212/";
+        String url = "http://167.114.174.132:9092/movies/";
+
+//        String[] batches = new String[] {"Batch211/", "Batch212/", "Batch213/", "Batch214/"};
+        String[] batches = new String[] {"Batch212/"};
         List<Node> resultList = new ArrayList<>();
 
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Elements links = doc.select("a[href]");
+        for(String batchName: batches) {
 
-
-        // REGEX
-        final String regex = "([\\.\\w']+?)(\\.[0-9]{4}\\..*)";
-        final Pattern pattern = Pattern.compile(regex);
-
-        for (Element link : links) {
-
-            String decodedUrl="";
-
-            // decode the href URL becuase it was failing for  Bridget.Jones%27s.Baby.2016.720p.BluRay.x264-%5BYTS.AG%5D.mp4
+            Document doc = null;
             try {
-                decodedUrl = URLDecoder.decode(link.attr("href"), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                log.error("Error in  decoding the URL");
+                doc = Jsoup.connect(url + batchName).get();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            Elements links = doc.select("a[href]");
 
-            final Matcher matcher = pattern.matcher(decodedUrl);
 
-            while (matcher.find()) {
+            // REGEX
+            final String regex = "([\\.\\w']+?)(\\.[0-9]{4}\\..*)";
+            final Pattern pattern = Pattern.compile(regex);
 
-                Node node = Node.builder()
-                        .rawMovieName(matcher.group(0))
-                        .movieName(matcher.group(1).replace(".", " "))
-                        .text(link.text())
-                        .link(link.baseUri() + link.attr("href"))
-                        .build();
+            for (Element link : links) {
 
-                resultList.add(node);
+                String decodedUrl = "";
+
+                // decode the href URL becuase it was failing for  Bridget.Jones%27s.Baby.2016.720p.BluRay.x264-%5BYTS.AG%5D.mp4
+                try {
+                    decodedUrl = URLDecoder.decode(link.attr("href"), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    log.error("Error in  decoding the URL");
+                    e.printStackTrace();
+                }
+
+                final Matcher matcher = pattern.matcher(decodedUrl);
+
+                while (matcher.find()) {
+
+                    Node node = Node.builder()
+                            .rawMovieName(matcher.group(0))
+                            .movieName(matcher.group(1).replace(".", " "))
+                            .text(link.text())
+                            .link(link.baseUri() + link.attr("href"))
+                            .build();
+
+                    resultList.add(node);
+
+                }
 
             }
 

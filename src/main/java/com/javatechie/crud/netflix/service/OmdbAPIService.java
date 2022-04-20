@@ -1,7 +1,7 @@
 package com.javatechie.crud.netflix.service;
 
 import com.javatechie.crud.netflix.exception.NetflixException;
-import com.javatechie.crud.netflix.model.Movie;
+import com.javatechie.crud.netflix.model.ImdbMovie;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,7 +35,7 @@ public class OmdbAPIService {
 
     }
 
-    public Movie getMovieByTitle(String title) {
+    public ImdbMovie getMovieByTitle(String title) {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -43,7 +43,7 @@ public class OmdbAPIService {
                         .queryParam("t", title)
                         .build())
                 .retrieve()
-                .bodyToMono(Movie.class)
+                .bodyToMono(ImdbMovie.class)
                 .block();
 
     }
@@ -51,7 +51,7 @@ public class OmdbAPIService {
 
 
 
-    public Movie getMovieById(@PathVariable String id) {
+    public ImdbMovie getMovieById(@PathVariable String id) {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -59,7 +59,7 @@ public class OmdbAPIService {
                         .queryParam("i", id)
                         .build())
                 .retrieve()
-                .bodyToMono(Movie.class)
+                .bodyToMono(ImdbMovie.class)
                 .block();
 
     }
