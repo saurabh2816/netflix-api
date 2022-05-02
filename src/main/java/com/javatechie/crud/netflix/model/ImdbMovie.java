@@ -1,12 +1,17 @@
 package com.javatechie.crud.netflix.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ImdbMovie {
 
-    @JsonProperty("Title")
     private String title;
     @JsonProperty("Year")
     private String year;
@@ -55,13 +60,14 @@ public class ImdbMovie {
     @JsonProperty("Response")
     private String response;
 
-    public ImdbMovie() {
-    }
 
+    @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+
+    @JsonProperty("Title")
     public void setTitle(String title) {
         this.title = title;
     }

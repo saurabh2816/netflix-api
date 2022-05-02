@@ -1,5 +1,6 @@
 package com.javatechie.crud.netflix.model;
 
+import com.javatechie.crud.netflix.entity.ImdbMovieEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
-    private ImdbMovie info;
+    private ImdbMovieEntity info;
     private String url;
 }
