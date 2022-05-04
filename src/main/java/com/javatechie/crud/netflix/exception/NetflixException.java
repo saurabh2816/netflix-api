@@ -16,6 +16,10 @@ public class NetflixException extends Exception {
         this.setCode(code);
     }
 
+    public NetflixException(String s) {
+        System.out.println("Som exception " + s);
+    }
+
     public HttpStatus getCode() {
         return code;
     }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface MovieRepository extends JpaRepository<ImdbMovieEntity,Integer> {
+public interface MovieRepository extends JpaRepository<ImdbMovieEntity, Long> {
 
     Optional<ImdbMovieEntity> findByTitle(String title);
 }

@@ -5,13 +5,17 @@ import com.javatechie.crud.netflix.exception.NetflixException;
 import com.javatechie.crud.netflix.model.ImdbMovie;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
 import com.javatechie.crud.netflix.repository.MovieRepository;
-import com.javatechie.crud.netflix.repository.RatingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -21,16 +25,15 @@ import java.util.Optional;
 public class OmdbAPIService {
 
     private MovieRepository movieRepository;
-    private RatingRepository ratingRepository;
 
-    public OmdbAPIService(MovieRepository movieRepository, RatingRepository ratingRepository) {
+    public OmdbAPIService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.ratingRepository = ratingRepository;
     }
 
     private static final String API_KEY = "cd04853d";
     String url = "http://www.omdbapi.com/";
     WebClient webClient = WebClient.create(url);
+    WebClient posterAvailabilityCheckClient = WebClient.create();
 
     public OmdbSearchResults getMoviesByQuery(String query) {
 
@@ -48,45 +51,22 @@ public class OmdbAPIService {
 
     }
 
+
+    private Mono<Throwable> handleErrors(ClientResponse response ) {
+        return response.bodyToMono(String.class).flatMap(body -> {
+            log.error("LOg errror");
+            return Mono.error(new Exception());
+        });
+    }
+
     public ImdbMovieEntity getMovieByTitle(String title) {
 
-        // TODO: check if the movie is present in DB
+
         Optional<ImdbMovieEntity> movie = movieRepository.findByTitle(title);
-//
+
         if(movie.isPresent()) {
-
             return movie.get();
-
-//            return ImdbMovie.builder()
-//                    .title(movie.get().getTitle())
-//                    .year(movie.get().getYear())
-//                    .rated(movie.get().getRated())
-//                    .released(movie.get().getReleased())
-//                    .runtime(movie.get().getRuntime())
-//                    .genre(movie.get().getGenre())
-//                    .director(movie.get().getDirector())
-//                    .writer(movie.get().getWriter())
-//                    .actors(movie.get().getActors())
-//                    .plot(movie.get().getPlot())
-//                    .language(movie.get().getLanguage())
-//                    .country(movie.get().getCountry())
-//                    .awards(movie.get().getAwards())
-//                    .poster(movie.get().getPoster())
-//                    .ratings(movie.get().getRatings())
-//                    .metascore(movie.get().getMetascore())
-//                    .imdbRating(movie.get().getImdbRating())
-//                    .imdbVotes(movie.get().getImdbVotes())
-//                    .imdbId(movie.get().getImdbId())
-//                    .type(movie.get().getType())
-//                    .dvd(movie.get().getDvd())
-//                    .boxOffice(movie.get().getBoxOffice())
-//                    .production(movie.get().getProduction())
-//                    .website(movie.get().getWebsite())
-//                    .response(movie.get().getResponse())
-//                    .build();
         }
-
-        // TODO: if not make an IMDB call and save to db
 
         ImdbMovie res = webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -97,41 +77,90 @@ public class OmdbAPIService {
                 .bodyToMono(ImdbMovie.class)
                 .block();
 
-        // save res to the movie table
-        ImdbMovieEntity movieEntity= movieRepository.save(ImdbMovieEntity.builder()
-                        .actors(res.getActors())
-                        .awards(res.getAwards())
-                        .boxOffice(res.getBoxOffice())
-                        .country(res.getCountry())
-                        .director(res.getDirector())
-                        .dvd(res.getDvd())
-                        .genre(res.getGenre())
-                        .runtime(res.getRuntime())
-                        .imdbId(res.getImdbId())
-                        .imdbRating(res.getImdbRating())
-                        .imdbVotes(res.getImdbVotes())
-                        .language(res.getLanguage())
-                        .metascore(res.getMetascore())
-                        .plot(res.getPlot())
-                        .poster(res.getPoster())
-                        .production(res.getProduction())
-                        .rated(res.getRated())
+        // check for poster availability before saving
+
+//        Mono<String> monoHttpStatus = posterAvailabilityCheckClient.get()
+//                .uri(res.getPoster())
+//                .exchange()
+//                .flatMap(clientResponse -> clientResponse.bodyToMono(String.class));
+
+        Mono<Void> status = posterAvailabilityCheckClient.get()
+                .uri(res.getPoster())
+                .retrieve()
+                .onStatus(HttpStatus::isError, response ->  Mono.error(new NetflixException(HttpStatus.INTERNAL_SERVER_ERROR, "sfgdfg")))
+                .bodyToMono(Void.class);
+
+
+//        Mono<ClientResponse> clientResponse = WebClient.builder().build()
+//                .get().uri(res.getPoster())
+//                .exchange();
+//
+//        HttpStatus scode;
+//        clientResponse.subscribe((response) -> {
+//
+//            HttpStatus statusCode = response.statusCode();
+//
+//            Mono<String> bodyToMono = response.bodyToMono(String.class);
+//            // the second subscribe to access the body
+//            bodyToMono.subscribe((body) -> {
+//
+//                System.out.println("stausCode:" + statusCode);
+//
+//            }, (ex) -> {
+//                // handle error
+//            });
+//        }, (ex) -> {
+//            // handle network error
+//        });
+
+
+
+
+
+
+
+
+
+
+        // res could be null if there doesn't exist a movie with that name
+        // use cases include: movie title missing apostrophes, error in extracting the movie name from the link etc.
+
+        if(res.getTitle()==null) return ImdbMovieEntity.builder().build();
+
+            // save res to the movie table
+            ImdbMovieEntity movieEntity = movieRepository.save(ImdbMovieEntity.builder()
+                    .actors(res.getActors())
+                    .awards(res.getAwards())
+                    .boxOffice(res.getBoxOffice())
+                    .country(res.getCountry())
+                    .director(res.getDirector())
+                    .dvd(res.getDvd())
+                    .genre(res.getGenre())
+                    .runtime(res.getRuntime())
+                    .imdbId(res.getImdbId())
+                    .imdbRating(res.getImdbRating())
+                    .imdbVotes(res.getImdbVotes())
+                    .language(res.getLanguage())
+                    .metascore(res.getMetascore())
+                    .plot(res.getPlot())
+                    .poster(res.getPoster())
+                    .production(res.getProduction())
+                    .rated(res.getRated())
 //                        .ratings(res.getRatings())
-                        .response(res.getResponse())
-                        .type(res.getType())
-                        .website(res.getWebsite())
-                        .writer(res.getWriter())
-                        .title(res.getTitle())
-                        .released(res.getReleased())
-                        .year(res.getYear())
-                        .released(res.getReleased())
-                .build());
+                    .response(res.getResponse())
+                    .type(res.getType())
+                    .website(res.getWebsite())
+                    .writer(res.getWriter())
+                    .title(res.getTitle())
+                    .released(res.getReleased())
+                    .year(res.getYear())
+                    .released(res.getReleased())
+                    .build());
+
 
         return movieEntity;
 
     }
-
-
 
 
     public ImdbMovie getMovieById(@PathVariable String id) {

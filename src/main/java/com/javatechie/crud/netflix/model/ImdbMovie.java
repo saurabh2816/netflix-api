@@ -39,8 +39,8 @@ public class ImdbMovie {
     private String awards;
     @JsonProperty("Poster")
     private String poster;
-    @JsonProperty("Ratings")
-    private List<Rating> ratings;
+//    @JsonProperty("Ratings")
+//    private List<Rating> ratings;
     @JsonProperty("Metascore")
     private String metascore;
     private String imdbRating;
@@ -176,13 +176,13 @@ public class ImdbMovie {
         this.poster = poster;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
-    }
+//    public List<Rating> getRatings() {
+//        return ratings;
+//    }
+//
+//    public void setRatings(List<Rating> ratings) {
+//        this.ratings = ratings;
+//    }
 
     public String getMetascore() {
         return metascore;

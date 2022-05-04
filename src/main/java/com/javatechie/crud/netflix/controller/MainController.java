@@ -42,14 +42,17 @@ public class MainController {
 
         List<Movie> movieList = new ArrayList<>();
         for (Node node : res) {
-            if(node.getRawMovieName().contains(".mp4")) { // TODO: Add support for more media types
+            if(node.getRawMovieName().contains(".mp4") && !node.getMovieName().isEmpty()) { // TODO: Add support for more media types
 
 
                 ImdbMovieEntity imdbMovie = omdbAPIService.getMovieByTitle(node.getMovieName());
-                movieList.add(Movie.builder()
-                        .info(imdbMovie)
-                        .url(node.getLink())
-                        .build());
+
+                if(imdbMovie.getImdbId()!=null) {
+                    movieList.add(Movie.builder()
+                            .info(imdbMovie)
+                            .url(node.getLink())
+                            .build());
+                }
             }
         }
 

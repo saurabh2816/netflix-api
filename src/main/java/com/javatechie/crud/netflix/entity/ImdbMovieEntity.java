@@ -17,10 +17,10 @@ import java.util.List;
 @Table(name = "Movie")
 public class ImdbMovieEntity {
 
-    @Id
-    @Column(name="imdbId")
-    private String imdbId;
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
 
+    private String imdbId;
     private String title;
     private String year;
     private String rated;
@@ -36,8 +36,8 @@ public class ImdbMovieEntity {
     private String awards;
     private String poster;
 
-    @OneToMany(mappedBy = "rating", fetch = FetchType.EAGER)
-    private List<ImdbRatingEntity> ratings;
+//    @OneToMany(mappedBy = "rating", fetch = FetchType.EAGER)
+//    private List<ImdbRatingEntity> ratings;
     private String metascore;
 
     @Column(name="imdbRating")
