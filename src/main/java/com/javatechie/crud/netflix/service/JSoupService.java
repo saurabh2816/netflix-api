@@ -27,7 +27,7 @@ public class JSoupService {
 
         String url = "http://167.114.174.132:9092/movies/";
 
-        String[] batches = new String[] {"Batch211/" };
+        String[] batches = new String[] {"Batch206/" };
 //        String[] batches = new String[] {"Batch212/"};
         List<Node> resultList = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class JSoupService {
 
                 String decodedUrl = "";
 
-                // decode the href URL becuase it was failing for  Bridget.Jones%27s.Baby.2016.720p.BluRay.x264-%5BYTS.AG%5D.mp4
+                // decode the href URL because it was failing for  Bridget.Jones%27s.Baby.2016.720p.BluRay.x264-%5BYTS.AG%5D.mp4
                 try {
                     decodedUrl = URLDecoder.decode(link.attr("href"), "UTF-8");
                 } catch (UnsupportedEncodingException e) {
@@ -62,15 +62,33 @@ public class JSoupService {
 
                 while (matcher.find()) {
 
-                    Node node = Node.builder()
-                            .rawMovieName(matcher.group(0))
-                            .movieName(matcher.group(1).replace(".", " "))
-                            .text(link.text())
-                            .link(link.baseUri() + link.attr("href"))
-                            .build();
+                    String rawFileName = matcher.group(0);
+                    String movieName = matcher.group(1).replace(".", " ");
+                    // SRT FILE
+                    if(rawFileName.contains("srt")) {
 
-                    resultList.add(node);
+                        // this is a srt file and needs to be associated with the previous mp4 movie entry in the resultList
+                        if(resultList.get(resultList.size()-1).getMovieName().equals(movieName)) {
 
+                            // this subtitle belongs to this previous movie
+                            Node previousMovie = resultList.get(resultList.size()-1);
+                            previousMovie.setStrLink(link.baseUri() + link.attr("href"));
+
+                        }
+                    }
+
+                    // ALLEGED MP4 FILE
+                    else {
+
+                        Node node = Node.builder()
+                                .rawMovieName(matcher.group(0))
+                                .movieName(movieName)
+                                .text(link.text())
+                                .link(link.baseUri() + link.attr("href"))
+                                .build();
+
+                        resultList.add(node);
+                    }
                 }
 
             }

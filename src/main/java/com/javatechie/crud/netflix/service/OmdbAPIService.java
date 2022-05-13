@@ -1,21 +1,18 @@
 package com.javatechie.crud.netflix.service;
 
-import com.javatechie.crud.netflix.entity.ImdbMovieEntity;
+import com.javatechie.crud.netflix.entity.Movie;
 import com.javatechie.crud.netflix.exception.NetflixException;
 import com.javatechie.crud.netflix.model.ImdbMovie;
+import com.javatechie.crud.netflix.model.Node;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
 import com.javatechie.crud.netflix.repository.MovieRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.ClientResponse;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -59,10 +56,11 @@ public class OmdbAPIService {
         });
     }
 
-    public ImdbMovieEntity getMovieByTitle(String title) {
+    public Movie getMovieByTitle(Node node) {
 
+        String title = node.getMovieName();
 
-        Optional<ImdbMovieEntity> movie = movieRepository.findByTitle(title);
+        Optional<Movie> movie = movieRepository.findByTitle(title);
 
         if(movie.isPresent()) {
             return movie.get();
@@ -84,11 +82,11 @@ public class OmdbAPIService {
 //                .exchange()
 //                .flatMap(clientResponse -> clientResponse.bodyToMono(String.class));
 
-        Mono<Void> status = posterAvailabilityCheckClient.get()
-                .uri(res.getPoster())
-                .retrieve()
-                .onStatus(HttpStatus::isError, response ->  Mono.error(new NetflixException(HttpStatus.INTERNAL_SERVER_ERROR, "sfgdfg")))
-                .bodyToMono(Void.class);
+//        Mono<Void> status = posterAvailabilityCheckClient.get()
+//                .uri(res.getPoster())
+//                .retrieve()
+//                .onStatus(HttpStatus::isError, response ->  Mono.error(new NetflixException(HttpStatus.INTERNAL_SERVER_ERROR, "sfgdfg")))
+//                .bodyToMono(Void.class);
 
 
 //        Mono<ClientResponse> clientResponse = WebClient.builder().build()
@@ -114,21 +112,13 @@ public class OmdbAPIService {
 //        });
 
 
-
-
-
-
-
-
-
-
         // res could be null if there doesn't exist a movie with that name
         // use cases include: movie title missing apostrophes, error in extracting the movie name from the link etc.
 
-        if(res.getTitle()==null) return ImdbMovieEntity.builder().build();
+        if(res.getTitle()==null) return Movie.builder().build();
 
             // save res to the movie table
-            ImdbMovieEntity movieEntity = movieRepository.save(ImdbMovieEntity.builder()
+            Movie movieEntity = movieRepository.save(Movie.builder()
                     .actors(res.getActors())
                     .awards(res.getAwards())
                     .boxOffice(res.getBoxOffice())
@@ -146,7 +136,7 @@ public class OmdbAPIService {
                     .poster(res.getPoster())
                     .production(res.getProduction())
                     .rated(res.getRated())
-//                        .ratings(res.getRatings())
+//                  .ratings(res.getRatings())  -- we are not saving ratings
                     .response(res.getResponse())
                     .type(res.getType())
                     .website(res.getWebsite())
@@ -155,6 +145,11 @@ public class OmdbAPIService {
                     .released(res.getReleased())
                     .year(res.getYear())
                     .released(res.getReleased())
+
+                    // data from node movielink and srtLink
+                    .link(node.getLink())
+                    .srtLink(node.getStrLink())
+
                     .build());
 
 

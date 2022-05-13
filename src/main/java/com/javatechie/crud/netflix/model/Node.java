@@ -12,5 +12,6 @@ public class Node {
     private String rawMovieName;
     private String text;
     private String link;
+    private String strLink;
 
 }

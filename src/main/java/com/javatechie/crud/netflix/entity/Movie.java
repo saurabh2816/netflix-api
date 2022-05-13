@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Builder
@@ -15,11 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "Movie")
-public class ImdbMovieEntity {
+public class Movie {
 
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    private String srtLink;
+    private String link;
     private String imdbId;
     private String title;
     private String year;

@@ -1,8 +1,8 @@
 package com.javatechie.crud.netflix.controller;
-import com.javatechie.crud.netflix.entity.ImdbMovieEntity;
+import com.javatechie.crud.netflix.entity.Movie;
 import com.javatechie.crud.netflix.model.ImdbMovie;
-import com.javatechie.crud.netflix.model.Movie;
 import com.javatechie.crud.netflix.model.OmdbSearchResults;
+import com.javatechie.crud.netflix.service.MovieService;
 import com.javatechie.crud.netflix.service.OmdbAPIService;
 
 import com.javatechie.crud.netflix.model.Node;
@@ -26,47 +26,55 @@ public class MainController {
 
 
     @Autowired
-    private JSoupService JSoupService;
-    private OmdbAPIService omdbAPIService;
+    private final JSoupService JSoupService;
+
+    private final OmdbAPIService omdbAPIService;
+    private final MovieService movieService;
     private Map<String, String> myMap;
 
-    public MainController(JSoupService JSoupService, OmdbAPIService omdbAPIService) {
+    public MainController(JSoupService JSoupService, OmdbAPIService omdbAPIService, MovieService movieService) {
         this.JSoupService = JSoupService;
         this.omdbAPIService = omdbAPIService;
+        this.movieService = movieService;
     }
 
-    @GetMapping("/getOne")
+    @GetMapping("/saveAllMoviesFromALink")
     public ResponseEntity<List<Movie>> getListOfNodesFromOneLink() {
 
         List<Node> res = JSoupService.getListOfNodesFromLink();
 
         List<Movie> movieList = new ArrayList<>();
         for (Node node : res) {
-            if(node.getRawMovieName().contains(".mp4") && !node.getMovieName().isEmpty()) { // TODO: Add support for more media types
+            if (node.getRawMovieName().contains(".mp4") && !node.getMovieName().isEmpty()) { // TODO: Add support for more media types
+
+                Movie movie = omdbAPIService.getMovieByTitle(node);
 
 
-                ImdbMovieEntity imdbMovie = omdbAPIService.getMovieByTitle(node.getMovieName());
-
-                if(imdbMovie.getImdbId()!=null) {
-                    movieList.add(Movie.builder()
-                            .info(imdbMovie)
-                            .url(node.getLink())
-                            .build());
+                // whuy would imdb Id be null? => maybe we don't have info for but that should be handled before inside the getMovieByTitle()
+                if (movie.getImdbId() != null) {
+                    movieList.add(movie);
+                } else {
+                    log.error("This node has some issue. Debug node to find out. New format hai boss!!");
                 }
             }
         }
-
-//        res.stream().filter(node -> !node.getRawMovieName().contains(".srt")).map(node -> {
-//            Movie movie = omdbAPIService.getMovieByTitle(node.getMovieName());
-//            return movieList.add(movie);
-//        });
 
         return ResponseEntity.ok(movieList);
 
     }
 
 
-    @GetMapping("/movies/{id}")
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Movie>> getAllMovies() {
+
+        List<Movie> res = movieService.getAllMovies();
+        return ResponseEntity.ok(res);
+
+    }
+
+
+
+        @GetMapping("/movies/{id}")
     public ImdbMovie getMovieById(@PathVariable String id) {
 
         return omdbAPIService.getMovieById(id);
@@ -88,12 +96,12 @@ public class MainController {
     }
 
 
-    @GetMapping("/movies/bytitle/{title}")
-    public ImdbMovieEntity getMovieByTitle(@PathVariable String title) {
-
-        return omdbAPIService.getMovieByTitle(title);
-
-    }
+//    @GetMapping("/movies/bytitle/{title}")
+//    public ImdbMovieEntity getMovieByTitle(@PathVariable String title) {
+//
+//        return omdbAPIService.getMovieByTitle(title);
+//
+//    }
 
 
 
