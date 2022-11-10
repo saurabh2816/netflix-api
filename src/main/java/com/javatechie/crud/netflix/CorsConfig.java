@@ -27,12 +27,9 @@ public class CorsConfig implements  WebMvcConfigurer {
 //    }
 
 
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/api/**")
-                    .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                    .allowedOrigins("http://saurabhrana.com", "http://localhost:4200")
-                    .exposedHeaders("Authorization");
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 
 //    @Bean
