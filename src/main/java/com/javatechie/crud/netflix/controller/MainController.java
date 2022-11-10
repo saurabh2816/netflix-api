@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 
-@CrossOrigin(origins = "http://saurabhrana.com/", allowedHeaders = "*" )
+@CrossOrigin(origins = "*", allowedHeaders = "*" )
 @RequestMapping(path = "/api/v1")
 public class MainController {
 
@@ -40,16 +40,6 @@ public class MainController {
         this.JSoupService = JSoupService;
         this.omdbAPIService = omdbAPIService;
         this.movieService = movieService;
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
-            }
-        };
     }
 
     @GetMapping("/saveAllMoviesFromALink")
