@@ -9,8 +9,12 @@ import com.javatechie.crud.netflix.model.Node;
 import com.javatechie.crud.netflix.service.JSoupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,16 @@ public class MainController {
         this.JSoupService = JSoupService;
         this.omdbAPIService = omdbAPIService;
         this.movieService = movieService;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("*");
+            }
+        };
     }
 
     @GetMapping("/saveAllMoviesFromALink")
