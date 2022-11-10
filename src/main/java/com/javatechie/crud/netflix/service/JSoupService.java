@@ -27,7 +27,7 @@ public class JSoupService {
 
         String url = "http://167.114.174.132:9092/movies/";
 
-        String[] batches = new String[] {"Batch206/" };
+        String[] batches = new String[] {"Batch235/" };
 //        String[] batches = new String[] {"Batch212/"};
         List<Node> resultList = new ArrayList<>();
 
