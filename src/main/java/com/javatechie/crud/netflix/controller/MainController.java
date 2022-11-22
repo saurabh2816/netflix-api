@@ -22,8 +22,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-
-@CrossOrigin(origins = "*", allowedHeaders = "*" )
+@CrossOrigin(maxAge = 3600, allowedHeaders = "*" )
 @RequestMapping(path = "/api/v1")
 public class MainController {
 
