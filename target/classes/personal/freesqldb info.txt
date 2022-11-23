@@ -1,5 +1,0 @@
-Host: sql3.freesqldatabase.com
-Database name: sql3489290
-Database user: sql3489290
-Database password: DrYlqRW7Yw
-Port number: 3306

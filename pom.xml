@@ -18,6 +18,7 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<start-class>com.javatechie.crud.netflix.NetflixApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -73,35 +74,54 @@
 
 	</dependencies>
 
+<!--	<build>-->
+<!--		<plugins>-->
+
+
+<!--			<plugin>-->
+<!--				&lt;!&ndash; Build an executable JAR &ndash;&gt;-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.1.0</version>-->
+<!--				<configuration>-->
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<addClasspath>true</addClasspath>-->
+<!--							<classpathPrefix>lib/</classpathPrefix>-->
+<!--							<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<executable>true</executable>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+
+<!--		</plugins>-->
+
+<!--	</build>-->
 	<build>
 		<plugins>
-
-
 			<plugin>
-				<!-- Build an executable JAR -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>
-						</manifest>
-					</archive>
+					<fork>true</fork>
+					<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>11</source><target>11</target>
-					</configuration>
-				</plugin>
-
 		</plugins>
-
 	</build>
 
 </project>
