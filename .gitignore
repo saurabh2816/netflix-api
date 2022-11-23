@@ -1,2 +1,5 @@
  src/main/resources/personal
 
+*.class
+.idea/
+.DS_Store
