@@ -74,45 +74,45 @@
 
 	</dependencies>
 
-	<build>
-		<plugins>
-
-
-			<plugin>
-				<!-- Build an executable JAR -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<executable>true</executable>
-				</configuration>
-			</plugin>
-
-		</plugins>
-
-	</build>
 <!--	<build>-->
 <!--		<plugins>-->
+
+
+<!--			<plugin>-->
+<!--				&lt;!&ndash; Build an executable JAR &ndash;&gt;-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.3.0</version>-->
+<!--				<configuration>-->
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<addClasspath>true</addClasspath>-->
+<!--							<classpathPrefix>lib/</classpathPrefix>-->
+<!--							<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 <!--			<plugin>-->
 <!--				<groupId>org.springframework.boot</groupId>-->
 <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--				<configuration>-->
-<!--					<fork>true</fork>-->
-<!--					<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>-->
+<!--					<executable>true</executable>-->
 <!--				</configuration>-->
+<!--			</plugin>-->
+
+<!--		</plugins>-->
+
+<!--	</build>-->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+					<mainClass>com.javatechie.crud.netflix.NetflixApplication</mainClass>
+				</configuration>
 <!--				<executions>-->
 <!--					<execution>-->
 <!--						<goals>-->
@@ -120,14 +120,15 @@
 <!--						</goals>-->
 <!--					</execution>-->
 <!--				</executions>-->
-<!--			</plugin>-->
+			</plugin>
 
 <!--			<plugin>-->
 <!--				<groupId>org.springframework.boot</groupId>-->
 <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--			</plugin>-->
 
-<!--		</plugins>-->
-<!--	</build>-->
+		</plugins>
+	</build>
+
 
 </project>
