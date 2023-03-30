@@ -25,9 +25,39 @@ public class JSoupService {
 
     public List<Node> getListOfNodesFromLink() {
 
-        String url = "http://167.114.174.132:9092/movies/";
+        String url = "http://59.153.203.202/Data/All_Movies/hollywood/best/";
 
-        String[] batches = new String[] {"Batch229/","Batch230/","Batch231/"};
+        String[] batches = new String[] {"Alien vs Predator (2004)",
+                "Ant-Man (2015)",
+                "Ant-Man And The Wasp (2018)",
+                "Aquaman (2018)",
+                "Avatar ECE (2009)",
+                "Avengers Age of Ultron (2015)",
+                "Avengers Endgame (2019)",
+                "Avengers Infinity War (2018)",
+                "Batman Begins (2005)",
+                "Batman The Dark Knight (2008)",
+                "Batman V Superman Dawn Of Justice (2016)",
+                "Black Panther (2018)",
+                "Bumblebee (2018)",
+                "Captain America - The First Avenger (2011)",
+                "Captain America Civil War (2016)",
+                "Captain America The Winter Soldier (2014)",
+                "Captain Marvel (2019)",
+                "Dark Phoenix (2019)",
+                "Despicable Me (2010)",
+                "Despicable Me 2 (2013)",
+                "Despicable Me 3 (2017)",
+                "Die Hard (1988)",
+                "Die Hard 2 (1990)",
+                "Die Hard 3 (1995)",
+                "Die Hard 4 (2007)",
+                "Fantastic Beasts And Where To Find Them (2016)",
+                "Fantastic Beasts The Crimes Of Grindelwald (2018)",
+                "Fast & Furious Presents Hobbs & Shaw (2019)",
+                "Fast Five (2011)",
+                "Fast and Furious (2009)",
+                "Furious 6 (2013)"};
 //        String[] batches = new String[] {"Batch212/"};
         List<Node> resultList = new ArrayList<>();
 
