@@ -3,3 +3,8 @@
 *.class
 .idea/
 .DS_Store
+/target/classes/application.properties
+/target/classes/application.yml
+/target/classes/personal/freesqldb info.txt
+/target/classes/personal/img.png
+/target/classes/personal/img_1.png
