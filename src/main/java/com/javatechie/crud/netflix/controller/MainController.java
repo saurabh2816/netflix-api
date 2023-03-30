@@ -53,7 +53,7 @@ public class MainController {
                 Movie movie = omdbAPIService.getMovieByTitle(node);
 
 
-                // whuy would imdb Id be null? => maybe we don't have info for but that should be handled before inside the getMovieByTitle()
+                // why would imdb Id be nulgil? => maybe we don't have info for but that should be handled before inside the getMovieByTitle()
                 if (movie.getImdbId() != null) {
                     movieList.add(movie);
                 } else {
